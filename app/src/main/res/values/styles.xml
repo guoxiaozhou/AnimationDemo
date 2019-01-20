@@ -1,0 +1,26 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <!--<declare-styleable name="circleProgressBar">-->
+        <!--<attr name="circleWidth" format="dimension" />-->
+        <!--<attr name="betaAngle" format="integer" />-->
+        <!--<attr name="firstColor" format="color" />-->
+        <!--<attr name="secondColor" format="color" />-->
+    <!--</declare-styleable>-->
+    <!--<declare-styleable name="progressCircleView">-->
+        <!--<attr name="circleNumberRingWidth" format="dimension"/>-->
+        <!--<attr name="circleNumberWidth" format="dimension"/>-->
+        <!--<attr name="circleDotWidth" format="dimension"/>-->
+        <!--<attr name="circleRectWidth" format="dimension"/>-->
+        <!--<attr name="circleNumberColor" format="color"/>-->
+        <!--<attr name="circleDotColor" format="color"/>-->
+        <!--<attr name="circleRectColor" format="color"/>-->
+
+    <!--</declare-styleable>-->
+</resources>
