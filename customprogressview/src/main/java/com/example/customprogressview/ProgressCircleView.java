@@ -170,7 +170,7 @@ public class ProgressCircleView extends FrameLayout {
                 TypedValue.COMPLEX_UNIT_DIP, px, getResources().getDisplayMetrics());
     }
 
-    void setProgress(int progress){
+   public void setProgress(int progress){
         circleNumberView.setProgress(progress,false);
     }
 
