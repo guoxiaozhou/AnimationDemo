@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 
 /**
@@ -18,20 +19,10 @@ import android.widget.FrameLayout;
 
 public class ProgressCircleView extends FrameLayout {
 
+    private  int textColor;
     private Context context;
 
-    public void setCircleDotWidth(int circleDotWidth) {
-        this.circleDotWidth = circleDotWidth;
-    }
-
-    public void setCircleRectWidth(int circleRectWidth) {
-        this.circleRectWidth = circleRectWidth;
-    }
-
-    public void setCircleNumberWidth(int circleNumberWidth) {
-        this.circleNumberWidth = circleNumberWidth;
-    }
-
+    private  int circleColor;
     private  int circleDotWidth;
     private  int circleRectWidth;
     private  int circleNumberRingWidth;
@@ -59,43 +50,46 @@ public class ProgressCircleView extends FrameLayout {
                 defStyleAttr, 0);
         int n = ta.getIndexCount();
         int size_150dp = pxTodp(150);
-        int size_180dp = pxTodp(180);
-        int size_3dp = pxTodp(3);
+        int size_170dp = pxTodp(170);
+        int size_4dp = pxTodp(4);
 
 
         //若xml没有设置以下属性，则使用默认值
-        circleDotWidth = size_180dp;
+        circleDotWidth = size_170dp;
         circleRectWidth = size_150dp;
         circleNumberWidth = size_150dp;
-        circleNumberRingWidth = size_3dp;
-        circleDotColor = getResources().getColor(R.color.colorPrimary);
-        circleRectColor = getResources().getColor(R.color.colorPrimary);
-        circleNumberColor = getResources().getColor(R.color.colorPrimary);
-
+        circleNumberRingWidth = size_4dp;
+        circleDotColor = getResources().getColor(R.color.defaultcolor);
+        circleRectColor = getResources().getColor(R.color.defaultcolor);
+        circleNumberColor = getResources().getColor(R.color.defaultcolor);
+        circleColor = getResources().getColor(R.color.defaultcolor);
+        textColor = getResources().getColor(R.color.defaultcolor);
 
         for(int i=0;i<n;i++){
             int attr = ta.getIndex(i);
             if (attr == R.styleable.progressCircleView_circleNumberWidth) {
                 circleNumberWidth = (int) ta.getDimension(attr, size_150dp);
 
-            } else if (attr == R.styleable.progressCircleView_circleNumberRingWidth) {
-                circleNumberRingWidth = (int) ta.getDimension(attr, size_3dp);
-
             } else if (attr == R.styleable.progressCircleView_circleRectWidth) {
                 circleRectWidth = (int) ta.getDimension(attr, size_150dp);
 
             } else if (attr == R.styleable.progressCircleView_circleDotWidth) {
-                circleDotWidth = (int) ta.getDimension(attr, size_180dp);
+                circleDotWidth = (int) ta.getDimension(attr, size_170dp);
 
             } else if (attr == R.styleable.progressCircleView_circleNumberColor) {
-                circleNumberColor = ta.getColor(attr, getResources().getColor(R.color.colorPrimary));
+                circleNumberColor = ta.getColor(attr, getResources().getColor(R.color.defaultcolor));
 
             } else if (attr == R.styleable.progressCircleView_circleDotColor) {
-                circleDotColor = ta.getColor(attr, getResources().getColor(R.color.colorPrimary));
+                circleDotColor = ta.getColor(attr, getResources().getColor(R.color.defaultcolor));
 
             } else if (attr == R.styleable.progressCircleView_circleRectColor) {
-                circleRectColor = ta.getColor(attr, getResources().getColor(R.color.colorPrimary));
+                circleRectColor = ta.getColor(attr, getResources().getColor(R.color.defaultcolor));
 
+            }else if (attr == R.styleable.progressCircleView_circleColor) {
+                circleColor = ta.getColor(attr, getResources().getColor(R.color.defaultcolor));
+
+            }else if (attr == R.styleable.progressCircleView_textColor) {
+                circleColor = ta.getColor(attr, getResources().getColor(R.color.defaultcolor));
             }
         }
 
@@ -119,12 +113,14 @@ public class ProgressCircleView extends FrameLayout {
         Log.i("onMeasure","测试");
         ObjectAnimator animator = ObjectAnimator.ofFloat(customDotview,"rotation", 0f, 360f);
         animator.setRepeatCount(ValueAnimator.INFINITE);
-//        animator.setDuration(1000);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setDuration(7000);
         animator.start();
 
         animator = ObjectAnimator.ofFloat(customRectview,"rotation",360f,0f);
         animator.setRepeatCount(ValueAnimator.INFINITE);
-//        animator.setDuration(1000);
+        animator.setDuration(8000);
+        animator.setInterpolator(new LinearInterpolator());
         animator.start();
 
         circleNumberView = new CircleNumberView(context,null);
@@ -134,6 +130,8 @@ public class ProgressCircleView extends FrameLayout {
         circleNumberView.setLayoutParams(numberParams);
         circleNumberView.setSecondColor(circleNumberColor);
         circleNumberView.setCircleWidth(circleNumberRingWidth);
+        circleNumberView.setFirstColor(circleColor);
+        circleNumberView.setTextColor(textColor);
         this.addView(circleNumberView);
 
     }

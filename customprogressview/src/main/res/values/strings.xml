@@ -8,14 +8,15 @@
         <attr name="secondColor" format="color" />
     </declare-styleable>
     <declare-styleable name="progressCircleView">
-    <attr name="circleNumberRingWidth" format="dimension"/>
     <attr name="circleNumberWidth" format="dimension"/>
     <attr name="circleDotWidth" format="dimension"/>
     <attr name="circleRectWidth" format="dimension"/>
     <attr name="circleNumberColor" format="color"/>
     <attr name="circleDotColor" format="color"/>
     <attr name="circleRectColor" format="color"/>
+    <attr name="circleColor" format="color"/>
+    <attr name="textColor" format="color"/>
     </declare-styleable>
 
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="defaultcolor">#5CACEE</color>
 </resources>

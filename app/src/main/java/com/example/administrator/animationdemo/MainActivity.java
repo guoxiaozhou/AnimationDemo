@@ -4,7 +4,10 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Toast;
+
+import com.example.customprogressview.ProgressCircleView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -14,7 +17,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
-//    private ProgressCircleView progressCircleview;
+    private ProgressCircleView progressCircleview;
 
 
 
@@ -22,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        progressCircleview = (ProgressCircleView) findViewById(R.id.progress_circleview);
-//        progressCircleview.setProgress(100);
+        progressCircleview = (ProgressCircleView) findViewById(R.id.progress_circleview);
+        progressCircleview.setProgress(100);
         new MyTask().execute("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547987073732&di=780cada4f115a5c431c759154e7c4feb&imgtype=0&src=http%3A%2F%2Fbrup.shengri.cn%2Fgoods%2F2017%2F02%2F13182518_b36033172439a36a4aa534d0336d86a1.jpg");
 
     }
@@ -32,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             // 下载前需要显示进度条
-//            progressCircleview.setVisibility(View.VISIBLE);
+            progressCircleview.setVisibility(View.VISIBLE);
             super.onPreExecute();
         }
 
@@ -92,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         // 发布更新的操作(主)
         @Override
         protected void onProgressUpdate(Integer... values) {
-//            progressCircleview.setProgress(values[0]);
+            progressCircleview.setProgress(values[0]);
             super.onProgressUpdate(values);
         }
 
@@ -101,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Bitmap result) {
 
             // 下载后取消进度条
-//            progressCircleview.setProgress(0);
+            progressCircleview.setProgress(0);
 //            progressCircleview.setVisibility(View.GONE);
             super.onPostExecute(result);
             Toast.makeText(MainActivity.this,"下载成功",Toast.LENGTH_SHORT).show();

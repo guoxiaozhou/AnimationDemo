@@ -22,6 +22,11 @@ import android.view.animation.OvershootInterpolator;
 
 public class CircleNumberView extends View {
     /**
+     * 外圆画笔
+     */
+    private  Paint firstPaint;
+    private  int textColor;
+    /**
      * 进度条最大值，默认为100
      */
     private int maxValue = 100;
@@ -121,17 +126,25 @@ public class CircleNumberView extends View {
                 firstColor = ta.getColor(attr, Color.LTGRAY); // 默认底色为亮灰色
 
             } else if (attr == R.styleable.circleProgressBar_secondColor) {
-                secondColor = ta.getColor(attr, getResources().getColor(R.color.colorPrimary)); // 默认进度条颜色为蓝色
+                secondColor = ta.getColor(attr, getResources().getColor(R.color.defaultcolor)); // 默认进度条颜色为蓝色
 
             } else if (attr == R.styleable.circleProgressBar_circleWidth) {
                 circleWidth = ta.getDimensionPixelSize(attr, (int) TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP, 6, getResources().getDisplayMetrics())); // 默认圆弧宽度为6dp
 
-            } else {
+            } else if (attr == R.styleable.circleProgressBar_circleWidth) {
+                textColor = ta.getColor(attr, Color.BLACK);
+
             }
         }
         Log.i("CircleNumberView","circleWidth:"+circleWidth+",sencondColor:"+secondColor+",n:"+n);
         ta.recycle();
+
+        firstPaint = new Paint();
+        firstPaint.setAntiAlias(true); // 抗锯齿
+        firstPaint.setDither(true); // 防抖动
+        firstPaint.setStrokeWidth(2);
+        firstPaint.setColor(firstColor);
 
         circlePaint = new Paint();
         circlePaint.setAntiAlias(true); // 抗锯齿
@@ -154,8 +167,10 @@ public class CircleNumberView extends View {
     @Override
     protected void onDraw(Canvas canvas)
     {
+        int des = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
         int center = this.getWidth() / 2;
-        int radius = center - circleWidth / 2;
+        int radius = center - circleWidth / 2-40+des;
 
         drawCircle(canvas, center, radius); // 绘制进度圆弧
         drawText(canvas, center, radius);
@@ -173,22 +188,27 @@ public class CircleNumberView extends View {
      */
     private void drawCircle(Canvas canvas, int center, int radius)
     {
-        circlePaint.setShader(null); // 清除上一次的shader
-        circlePaint.setColor(firstColor); // 设置底部圆环的颜色，这里使用第一种颜色
-        circlePaint.setStyle(Paint.Style.STROKE); // 设置绘制的圆为空心
-        canvas.drawCircle(center, center, radius, circlePaint); // 画底部的空心圆
-        RectF oval = new RectF(center - radius, center - radius, center + radius, center + radius); // 圆的外接正方形
+        //画一个简单的圆
+        firstPaint.setShader(null); // 清除上一次的shader
+        firstPaint.setColor(firstColor); // 设置底部圆环的颜色，这里使用第一种颜色
+        firstPaint.setStyle(Paint.Style.STROKE); // 设置绘制的圆为空心
+        canvas.drawCircle(center, center, radius+40, firstPaint);
 
+        //画一个圆环
+        RectF oval = new RectF(center - radius, center - radius, center + radius, center + radius);
+        circlePaint.setShader(null);
         // 绘制颜色渐变圆环
         // shader类是Android在图形变换中非常重要的一个类。Shader在三维软件中我们称之为着色器，其作用是来给图像着色。
         LinearGradient linearGradient = new LinearGradient(circleWidth, circleWidth, getMeasuredWidth()
                 - circleWidth, getMeasuredHeight() - circleWidth, colorArray, null, Shader.TileMode.MIRROR);
         circlePaint.setShader(linearGradient);
+        //这里注意设置为描边类型
+        circlePaint.setStyle(Paint.Style.STROKE);
         circlePaint.setShadowLayer(10, 10, 10, Color.RED);
         circlePaint.setColor(secondColor); // 设置圆弧的颜色
         circlePaint.setStrokeCap(Paint.Cap.ROUND); // 把每段圆弧改成圆角的
-
-        alphaAngle = currentValue * 360.0f / maxValue * 1.0f; // 计算每次画圆弧时扫过的角度，这里计算要注意分母要转为float类型，否则alphaAngle永远为0
+        // 计算每次画圆弧时扫过的角度，这里计算要注意分母要转为float类型，否则alphaAngle永远为0
+        alphaAngle = currentValue * 360.0f / maxValue * 1.0f;
         canvas.drawArc(oval, -90, alphaAngle, false, circlePaint);
     }
 
@@ -208,7 +228,7 @@ public class CircleNumberView extends View {
         String percent = String.format("%.1f", result) + "%";
 
         textPaint.setTextAlign(Paint.Align.CENTER); // 设置文字居中，文字的x坐标要注意
-        textPaint.setColor(Color.BLACK); // 设置文字颜色
+        textPaint.setColor(textColor); // 设置文字颜色
         textPaint.setTextSize(40); // 设置要绘制的文字大小
         textPaint.setStrokeWidth(0); // 注意此处一定要重新设置宽度为0,否则绘制的文字会重叠
         Rect bounds = new Rect(); // 文字边框
@@ -252,6 +272,12 @@ public class CircleNumberView extends View {
     {
         this.secondColor = color;
         circlePaint.setColor(secondColor);
+        invalidate();
+    }
+
+    public void setTextColor(int color){
+        this.textColor = color;
+        textPaint.setColor(textColor);
         invalidate();
     }
 

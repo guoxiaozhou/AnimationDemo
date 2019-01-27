@@ -7,16 +7,14 @@
     android:orientation="vertical"
     tools:context="com.example.administrator.animationdemo.MainActivity">
 
-<!--<com.example.customprogressview.ProgressCircleView-->
-    <!--android:id="@+id/progress_circleview"-->
-    <!--app:circleDotColor="#000000"-->
-    <!--app:circleNumberRingWidth="6dp"-->
-    <!--android:visibility="gone"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent">-->
+<com.example.customprogressview.ProgressCircleView
+    android:id="@+id/progress_circleview"
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
 
-<!--</com.example.customprogressview.ProgressCircleView>-->
+</com.example.customprogressview.ProgressCircleView>
 
 
 </LinearLayout>

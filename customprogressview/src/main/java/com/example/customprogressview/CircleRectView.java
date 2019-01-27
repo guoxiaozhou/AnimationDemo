@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 
 /**
@@ -14,22 +15,7 @@ import android.view.View;
 public class CircleRectView extends View {
     private Paint mPaint;
 
-    /**
-     * Constructor that is called when inflating a view from XML. This is called
-     * when a view is being constructed from an XML file, supplying attributes
-     * that were specified in the XML file. This version uses a default style of
-     * 0, so the only attribute values applied are those in the Context's Theme
-     * and the given AttributeSet.
-     * <p>
-     * <p>
-     * The method onFinishInflate() will be called after all children have been
-     * added.
-     *
-     * @param context The Context the view is running in, through which it can
-     *                access the current theme, resources, etc.
-     * @param attrs   The attributes of the XML tag that is inflating the view.
-     * @see #View(Context, AttributeSet, int)
-     */
+
     public CircleRectView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         mPaint = new Paint();
@@ -49,19 +35,23 @@ public class CircleRectView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        // 大圆半径
-        float outerRadius = (getWidth() < getHeight() ? getWidth() : getHeight()) / 2f;
+        mPaint.setShader(null);
+        mPaint.setAntiAlias(true); // 抗锯齿
+        mPaint.setDither(true); // 防抖动
+
+        // 半径，这里减去40是将半径缩小40
+        float outerRadius = (getWidth() < getHeight() ? getWidth() : getHeight()) / 2f-40;
         float centerX = getWidth() / 2f;
         float centerY = getHeight() / 2f;
 
-        // 1 画进度
-//        mPaint.setColor(getResources().getColor(R.color.colorPrimary));
         mPaint.setStyle(Paint.Style.FILL);
         int count = 0;
+        int des = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 6, getResources().getDisplayMetrics());
         while (count++ < 50) {
-            canvas.drawRect(centerX-3,centerY-outerRadius,centerX+3,centerY-outerRadius+6,
+            canvas.drawRect(centerX-3,centerY-outerRadius,centerX+3,centerY-outerRadius+des,
                     mPaint);
-            canvas.rotate(7.2f, centerX, centerY);
+            canvas.rotate(10.0f, centerX, centerY);
         }
     }
     public void setDotColor(int color){
